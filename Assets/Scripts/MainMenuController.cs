@@ -53,6 +53,11 @@ public class MainMenuController : MonoBehaviour
     public Slider GraphicQualitySlider;
     #endregion
 
+    //TODO: Buradaki bir cok sey tasinacak.
+    const string SFXVol = "_SFXVol";
+    const string MusicVol = "_MusicVol";
+    const string GraphicsDetail = "_GraphicsDetail";
+
     void Start()
     {
         #region MainMenu Initialization
@@ -87,27 +92,27 @@ public class MainMenuController : MonoBehaviour
         #endregion
 
         #region Player Prefs
-        if(PlayerPrefs.HasKey(gamePrefsName + "_SFXVol"))
+        if(PlayerPrefs.HasKey(gamePrefsName + SFXVol))
         {
-            audioSFXSliderValue = PlayerPrefs.GetFloat(gamePrefsName + "_SFXVol");
+            audioSFXSliderValue = PlayerPrefs.GetFloat(gamePrefsName + SFXVol);
         }
         else
         {
             audioSFXSliderValue = 1;
         }
 
-        if (PlayerPrefs.HasKey(gamePrefsName + "_MusicVol"))
+        if (PlayerPrefs.HasKey(gamePrefsName + MusicVol))
         {
-            audioMusicSliderValue = PlayerPrefs.GetFloat(gamePrefsName + "_MusicVol");
+            audioMusicSliderValue = PlayerPrefs.GetFloat(gamePrefsName + MusicVol);
         }
         else
         {
             audioMusicSliderValue = 1;
         }
 
-        if (PlayerPrefs.HasKey(gamePrefsName + "_GraphicsDetail"))
+        if (PlayerPrefs.HasKey(gamePrefsName + GraphicsDetail))
         {
-            graphicsSliderValue = PlayerPrefs.GetFloat(gamePrefsName + "_GraphicsDetail");
+            graphicsSliderValue = PlayerPrefs.GetFloat(gamePrefsName + GraphicsDetail);
         }
         else
         {
@@ -125,13 +130,6 @@ public class MainMenuController : MonoBehaviour
 
         GraphicQualitySlider.onValueChanged.AddListener((value) => ConfigValueToSliderValue(value, ref graphicsSliderValue));
         #endregion
-    }
-
-    private void Update()
-    {
-        Debug.Log("SFXValue: " + audioSFXSliderValue);
-        Debug.Log("MusicValue: " + audioMusicSliderValue);
-        Debug.Log("GraphicsQuality: " + graphicsSliderValue);
     }
 
     // Start, quit
@@ -189,11 +187,22 @@ public class MainMenuController : MonoBehaviour
         holder.SetActive(false);
         Holder_SubOptions.SetActive(false);
         Holder_OptionsMenu.SetActive(true);
+
+        SaveOptionsPrefs();
     }
 
     // Sliders
     void ConfigValueToSliderValue(float value, ref float toChange)
     {
         toChange = value;
+    }
+
+    void SaveOptionsPrefs()
+    {
+        PlayerPrefs.SetFloat(gamePrefsName + SFXVol, audioSFXSliderValue);
+        PlayerPrefs.SetFloat(gamePrefsName + MusicVol, audioMusicSliderValue);
+        PlayerPrefs.SetFloat(gamePrefsName + GraphicsDetail, graphicsSliderValue);
+
+        QualitySettings.SetQualityLevel((int)graphicsSliderValue, true);
     }
 }
