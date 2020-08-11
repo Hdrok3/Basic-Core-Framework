@@ -7,8 +7,8 @@ public class KeyboardInput : BaseInputController
 {
     protected override void CheckInput()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
 
         Up      = vertical > 0;
         Down    = vertical < 0;
